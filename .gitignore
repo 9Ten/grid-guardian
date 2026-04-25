@@ -1,0 +1,22 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# AutoGluon trained model artifacts (large binaries)
+AutogluonModels/
+
+# Versioned/draft chart exports
+section_a_forecast_v1.png
+section_a_forecast_v2.png
+section_a2_ensemble_v2.png
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+chronos2_energy_forecasting.ipynb
