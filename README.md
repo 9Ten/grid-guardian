@@ -18,7 +18,7 @@ Train / Test Split (3 × 24h backtest windows)
         ├──────────────────────────────────────────────────────────┐
         │  section_a_ensemble.py                                   │
         │  ┌──────────────────────────────────────────────────┐    │
-        │  │  Section A: Weighted Ensemble Forecasting        │    │
+        │  │  Section A: Base Model Forecasting               │    │
         │  │  Chronos-2 · AutoARIMA · RecursiveTabular (XGB)  │    │
         │  ├──────────────────────────────────────────────────┤    │
         │  │  Section A2: WeightedEnsemble (blended)          │    │
