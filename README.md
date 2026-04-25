@@ -161,6 +161,22 @@ Metric: **WQL — Weighted Quantile Loss** (lower is better)
 
 ---
 
+## Results
+
+### Section A2 — WeightedEnsemble vs Individual Models
+
+![WeightedEnsemble Blended Forecast](section_a2_ensemble.png)
+
+*Gold dashed line = WeightedEnsemble blended forecast with 80% interval. Dotted lines = individual base models (Chronos-2, AutoARIMA, XGBoost). Purple = observed demand.*
+
+### Section B — Multi-Layer Nonlinear Stacking
+
+![Nonlinear Stacking Forecast](section_b_stacking.png)
+
+*Gold dashed line = best nonlinear ensemble (PerQuantileTabularEnsemble / TabularEnsemble with LightGBM meta-learner). Dotted lines = base models. Purple = observed demand.*
+
+---
+
 ## Output Artifacts
 
 | File | Description |
