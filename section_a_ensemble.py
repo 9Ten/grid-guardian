@@ -50,8 +50,8 @@ predictor_a = TimeSeriesPredictor(
 ).fit(
     train_data,
     hyperparameters={
-        "Chronos2": {},  # Chronos-2 zero-shot (pretrained transformer)
-        "AutoARIMA": {"stationary": True},  # Classical ARIMA — fits per series
+        "Chronos2": {"context_length": 168},  # Chronos-2 zero-shot (pretrained transformer)
+        "AutoARIMA": {"stationary": True, "n_jobs": -1},  # Classical ARIMA — fits per series
         "RecursiveTabular": {  # XGBoost tree-based with lag features
             "model_name": "XGB",
             "lags": [1, 2, 3, 6, 12, 24, 48, 168,],  # hourly lags: last 1-3h, 6h, 12h, 1d, 2d, 1w
