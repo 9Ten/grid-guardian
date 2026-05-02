@@ -9,7 +9,7 @@ from functools import partial
 
 import pandas as pd
 from fastapi import FastAPI, HTTPException
-from optimizer import DEFAULT_PV, DEFAULT_TOU, MicrogridParams, solve_microgrid
+from app.optimizer import DEFAULT_PV, DEFAULT_TOU, MicrogridParams, solve_microgrid
 from pydantic import BaseModel, Field
 from autogluon.timeseries import TimeSeriesDataFrame, TimeSeriesPredictor
 
@@ -40,8 +40,8 @@ print(f"Best model       : {BEST_MODEL}")
 print(f"Prediction length: {PREDICTION_LENGTH}h")
 
 import pyomo.environ as _pyo  # noqa: E402
-if not _pyo.SolverFactory("cbc").available():
-    warnings.warn("CBC solver not found — POST /optimize will fail. Install coinor-cbc.")
+if not _pyo.SolverFactory("appsi_highs").available():
+    warnings.warn("HiGHS solver not found — POST /optimize will fail. Run: uv add highspy")
 
 
 # ---------------------------------------------------------------------------
@@ -445,13 +445,13 @@ async def optimize(request: OptimizeRequest):
     **Microgrid dispatch optimization** — 24-hour ahead schedule.
 
     Internally runs a load forecast, then solves a Mixed-Integer Linear Program
-    (Pyomo + CBC) to find the minimum-cost dispatch schedule for:
+    (Pyomo + HiGHS) to find the minimum-cost dispatch schedule for:
     - Grid import (time-of-use pricing)
     - Diesel generator (unit commitment with startup costs)
     - Battery energy storage system (SoC tracking, charge/discharge mutex)
 
     All power quantities are in **MW**, energy in **MWh**, prices in **THB/MWh**.
-    Requires the CBC solver (`brew install cbc` / `apt install coinor-cbc`).
+    Requires the highspy package (`uv add highspy`).
     """
     model_name = request.forecast_model or BEST_MODEL
     if model_name not in predictor.model_names():

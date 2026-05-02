@@ -31,7 +31,7 @@ and full island mode on diesel + BESS.
 ```
 ┌─────────────────────┐     ┌──────────────────────┐     ┌─────────────────────┐
 │  Historical hourly  │     │   Load Forecaster    │     │  Pyomo MILP         │
-│  observations       │ ──▶ │ AutoGluon ensemble   │ ──▶ │  (CBC solver)       │
+│  observations       │ ──▶ │ AutoGluon ensemble   │ ──▶ │  (HiGHS solver)     │
 │  (≥ 24 points, MW)  │     │ Chronos2 + ARIMA +   │     │                     │
 └─────────────────────┘     │ XGBoost + Wgt.Ens.   │     │  • Unit commitment  │
                             └──────────────────────┘     │  • Storage tracking │
@@ -48,13 +48,13 @@ and full island mode on diesel + BESS.
 **Two-stage decision pipeline**:
 
 1. **Forecast** — `AutoGluon WeightedEnsemble` returns a 24-h hourly load forecast (mean MW + 80% interval).
-2. **Optimize** — that forecast feeds a Pyomo MILP solved by **CBC**, returning an hourly schedule for grid import, diesel commitment, and BESS charge/discharge.
+2. **Optimize** — that forecast feeds a Pyomo MILP solved by **HiGHS**, returning an hourly schedule for grid import, diesel commitment, and BESS charge/discharge.
 
 **Key code modules**
 
 | File | Role |
 |---|---|
-| `optimizer.py` | Pyomo model builder, CBC solver wrapper, PEA-themed visualization |
+| `optimizer.py` | Pyomo model builder, HiGHS solver wrapper, PEA-themed visualization |
 | `api.py` | FastAPI endpoints (`/forecast`, `/optimize`, `/forecast/batch`) |
 | `section_a_ensemble.py` | Trains the WeightedEnsemble forecaster |
 | `section_b_stacking.py` | Trains nonlinear stacked ensemble (alternative model) |
@@ -183,7 +183,7 @@ TOTAL      :  2,307,800 THB Load served  : 179.10 MWh
 
 8. **The optimizer matches the planned MILP formulation 1-to-1** — `C_DG + C_GRID + C_BESS + C_PENALTY` with all five constraint groups (power balance, grid limit, generator limit, BESS, reserve margin) implemented exactly as specified.
 
-9. **CBC solves all three scenarios in <1 second** — the MILP has 24 hourly periods × ~12 variables ≈ 290 decision variables. CBC, GLPK, and HiGHS all handle this problem size trivially. No commercial solver needed.
+9. **HiGHS solves all three scenarios in <1 second** — the MILP has 24 hourly periods × ~12 variables ≈ 290 decision variables. HiGHS is pip-installable (`uv add highspy`), requires no system binary, and handles this problem size trivially. No commercial solver needed.
 
 10. **Terminal SoC is unconstrained** — the optimizer extracts the initial battery charge as "free" energy. For sustainable daily operation, add `SoC[24] ≥ SoC_init` to enforce a closed-cycle.
 
@@ -194,7 +194,7 @@ TOTAL      :  2,307,800 THB Load served  : 179.10 MWh
 ```bash
 # Install dependencies
 uv sync
-brew install cbc          # macOS — CBC MILP solver
+uv add highspy            # HiGHS MILP solver (pip-installable, no system binary needed)
 
 # Run the three Koh Tao scenarios standalone
 uv run python optimizer.py

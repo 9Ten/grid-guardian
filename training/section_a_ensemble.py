@@ -197,9 +197,9 @@ fig.suptitle(
 #     ha="center", fontsize=8, color=PEA_GOLD, style="italic",
 # )
 plt.tight_layout()
-plt.savefig("section_a_forecast.png", dpi=150, bbox_inches="tight", facecolor=PEA_WHITE)
+plt.savefig("outputs/forecasting/section_a_forecast.png", dpi=150, bbox_inches="tight", facecolor=PEA_WHITE)
 plt.show()
-print("Saved: section_a_forecast.png")
+print("Saved: outputs/forecasting/section_a_forecast.png")
 
 
 # =============================================================================
@@ -335,7 +335,7 @@ else:
     )
     plt.tight_layout()
     plt.savefig(
-        "section_a2_ensemble.png", dpi=150, bbox_inches="tight", facecolor=PEA_WHITE
+        "outputs/forecasting/section_a2_ensemble.png", dpi=150, bbox_inches="tight", facecolor=PEA_WHITE
     )
     plt.show()
-    print("Saved: section_a2_ensemble.png")
+    print("Saved: outputs/forecasting/section_a2_ensemble.png")

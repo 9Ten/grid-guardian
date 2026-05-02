@@ -243,6 +243,6 @@ fig.suptitle(
     y=1.02,
 )
 plt.tight_layout()
-plt.savefig("section_b_stacking.png", dpi=150, bbox_inches="tight", facecolor=PEA_WHITE)
+plt.savefig("outputs/forecasting/section_b_stacking.png", dpi=150, bbox_inches="tight", facecolor=PEA_WHITE)
 plt.show()
-print("Saved: section_b_stacking.png")
+print("Saved: outputs/forecasting/section_b_stacking.png")

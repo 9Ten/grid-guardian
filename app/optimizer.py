@@ -176,10 +176,10 @@ def solve_microgrid(
     tou_prices: dict[int, float],
     params: MicrogridParams,
 ) -> OptimizationResult:
-    """Solve the microgrid dispatch MILP with CBC and return results."""
+    """Solve the microgrid dispatch MILP with HiGHS and return results."""
     model = build_microgrid_model(load_forecast, pv_forecast, tou_prices, params)
 
-    solver = pyo.SolverFactory("cbc")
+    solver = pyo.SolverFactory("appsi_highs")
     result = solver.solve(model, tee=False)
     tc = result.solver.termination_condition
 
@@ -497,7 +497,7 @@ if __name__ == "__main__":
         pv=DEFAULT_PV,
         tou=DEFAULT_TOU,
         params=MicrogridParams(),
-        out_png="kohtao_scenario1_normal.png",
+        out_png="outputs/optimization/kohtao_scenario1_normal.png",
     )
 
     # ------------------------------------------------------------------
@@ -511,7 +511,7 @@ if __name__ == "__main__":
         pv=DEFAULT_PV,
         tou=DEFAULT_TOU,
         params=MicrogridParams(p_grid_max=6.0),
-        out_png="kohtao_scenario2_derated.png",
+        out_png="outputs/optimization/kohtao_scenario2_derated.png",
     )
 
     # ------------------------------------------------------------------
@@ -525,7 +525,7 @@ if __name__ == "__main__":
         pv=DEFAULT_PV,
         tou=DEFAULT_TOU,
         params=MicrogridParams(p_grid_max=0.0),
-        out_png="kohtao_scenario3_island.png",
+        out_png="outputs/optimization/kohtao_scenario3_island.png",
     )
 
     print(f"\n{'='*72}")
