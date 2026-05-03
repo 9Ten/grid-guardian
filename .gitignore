@@ -20,3 +20,4 @@ section_a2_ensemble_v2.png
 # Jupyter checkpoints
 .ipynb_checkpoints/
 chronos2_energy_forecasting.ipynb
+.claude/plans/system-role-you-are-tidy-cloud.md
