@@ -244,4 +244,61 @@ Charts are written to `outputs/optimization/`:
 
 ---
 
+## Configurable optimizer
+
+```
+┌─────────────────────────────────────────────┐
+│                   INPUTS                    │
+│  • Load forecast      (MW per hour)         │
+│  • PV forecast        (MW per hour)         │
+│  • TOU prices         (THB/MWh per hour)    │
+│  • MicrogridParams    (diesel/BESS/grid)    │
+│  • Grid limit         (MW per hour, opt.)   │
+└──────────────────────┬──────────────────────┘
+                       │
+                       ▼
+┌─────────────────────────────────────────────┐
+│           BUILD MICROGRID MODEL             │
+│                                             │
+│  ① Variables  (per hour)                   │
+│     P_grid  · P_gen  · u_gen  · v_start    │
+│     P_ch    · P_dis  · u_ch   · u_dis      │
+│     SoC     · P_shed                       │
+│                           │                 │
+│  ② Initial State  (t=0)  │                 │
+│     Generator = OFF       │                 │
+│     SoC       = 50%       │                 │
+│                           │                 │
+│  ③ Constraints            │                 │
+│     • Power balance: supply = demand        │
+│     • Grid ≤ cable limit                   │
+│     • Reserve ≥ 1.15 × load               │
+│     • Diesel min/max + startup logic        │
+│     • BESS mutex + SoC dynamics            │
+│     • Terminal SoC ≥ initial               │
+│                           │                 │
+│  ④ Objective — minimise Σ cost (THB)       │
+│     C_DG + C_GRID + C_BESS + C_PENALTY     │
+└──────────────────────┬──────────────────────┘
+                       │
+                       ▼
+┌─────────────────────────────────────────────┐
+│           SOLVE  (HiGHS MILP)               │
+└──────────────────────┬──────────────────────┘
+                       │
+               ┌───────┴───────┐
+           Feasible?           │
+               │               │
+              Yes              No
+               │               │
+               ▼               ▼
+  ┌────────────────────┐  ┌──────────────────┐
+  │ ✓ OptimizationResult│  │ ✗ OptimizationResult│
+  │   feasible = True  │  │   feasible = False│
+  │   total_cost       │  └──────────────────┘
+  │   dispatch_rows    │
+  │   (24 × per-hour)  │
+  └────────────────────┘
+```
+
 *Implementation: [app/optimizer.py](../app/optimizer.py) · API: [app/main.py](../app/main.py)*
