@@ -246,16 +246,20 @@ def solve_microgrid(
 
 
 # PEA Thailand brand colours
-_PEA_PURPLE = "#5B2D8E"
-_PEA_GOLD   = "#C8A014"
-_PEA_WHITE  = "#FFFFFF"
-_PEA_BG     = "#F5F0FB"  # very light purple tint for panel background
+_PEA_PURPLE    = "#5B2D8E"
+_PEA_GOLD      = "#C8A014"
+_PEA_WHITE     = "#FFFFFF"
+_PEA_BG        = "#F5F0FB"  # very light purple tint for panel background
+_PEA_GRID_LINE = "#C9B8E8"  # soft purple — axis grid lines
 
-# Derived palette — all elements stay within the PEA identity
-_PEA_PURPLE_MID  = "#7B4DAE"   # medium purple  — generator bars
-_PEA_PURPLE_DARK = "#3A1D5E"   # dark purple    — BESS charge (demand)
-_PEA_GOLD_LIGHT  = "#E8C84A"   # lighter gold   — BESS discharge
-_PEA_GRID_LINE   = "#C9B8E8"   # soft purple    — grid lines
+# Dispatch source palette — each source is visually distinct in stacked bars
+_COLOR_GRID     = "#5B2D8E"   # PEA purple    — mainland grid / submarine cable
+_COLOR_DIESEL   = "#D4531A"   # burnt orange  — diesel generator
+_COLOR_PV       = "#F0B429"   # amber         — solar PV
+_COLOR_BESS_DIS = "#2E9E6B"   # teal green    — BESS discharge (supply)
+_COLOR_BESS_CH  = "#5B8DB8"   # steel blue    — BESS charging (demand)
+_COLOR_SHED     = "#C0392B"   # crimson       — unserved load / load shedding
+_COLOR_LOAD     = "#1A1A2E"   # near-black    — island load line
 
 
 def plot_dispatch(
@@ -265,6 +269,7 @@ def plot_dispatch(
     tou_prices: dict[int, float],
     title: str = "Microgrid Optimal Dispatch",
     grid_limit: dict[int, float] | None = None,
+    params: MicrogridParams | None = None,
 ) -> plt.Figure:
     """Plot the optimized dispatch schedule across 3 panels (PEA brand theme).
 
@@ -311,18 +316,18 @@ def plot_dispatch(
         ax.grid(True, linestyle="--", color=_PEA_GRID_LINE, alpha=0.7)
 
     # ------------------------------------------------------------------
-    # Panel 1: TOU price (purple line) + Load forecast (gold dashed, right axis)
+    # Panel 1: TOU tariff (purple line) + Island load forecast (gold dashed, right axis)
     # ------------------------------------------------------------------
     ax1 = axes[0]
     ax1.plot(hours, price, color=_PEA_PURPLE, linewidth=2,
-             label="TOU Price (THB/MWh)")
-    ax1.set_ylabel("Price (THB/MWh)")
+             label="PEA TOU Tariff (THB/MWh)")
+    ax1.set_ylabel("Tariff (THB/MWh)")
     _grid(ax1)
 
     ax1r = ax1.twinx()
     ax1r.set_facecolor(_PEA_BG)
     ax1r.plot(hours, load_mw, color=_PEA_GOLD, linewidth=2,
-              linestyle="--", label="Load Forecast (MW)")
+              linestyle="--", label="Island Load Forecast (MW)")
     ax1r.set_ylabel("Load (MW)", color=_PEA_GOLD)
     ax1r.tick_params(axis="y", labelcolor=_PEA_GOLD)
     for spine in ax1r.spines.values():
@@ -335,72 +340,76 @@ def plot_dispatch(
                facecolor=_PEA_BG, edgecolor=_PEA_PURPLE, labelcolor=_PEA_PURPLE)
 
     # ------------------------------------------------------------------
-    # Panel 2: Stacked supply bars (above 0) + BESS charge bar (below 0)
+    # Panel 2: Stacked supply bars (above 0) + BESS charging bar (below 0)
     # ------------------------------------------------------------------
     ax2 = axes[1]
 
     ax2.bar(hours, p_grid, bar_w,
-            label="Grid Import (MW)", color=_PEA_PURPLE, alpha=0.85)
+            label="Grid Import — Submarine Cable", color=_COLOR_GRID, alpha=0.85)
     ax2.bar(hours, p_gen, bar_w,
-            label="Generator (MW)", color=_PEA_PURPLE_MID, alpha=0.85,
+            label="Diesel Generator", color=_COLOR_DIESEL, alpha=0.85,
             bottom=p_grid)
     bottom_pv = [g + n for g, n in zip(p_grid, p_gen)]
     ax2.bar(hours, pv_mw, bar_w,
-            label="PV (MW)", color=_PEA_GOLD, alpha=0.85,
+            label="Solar PV", color=_COLOR_PV, alpha=0.90,
             bottom=bottom_pv)
     bottom_dis = [b + pv for b, pv in zip(bottom_pv, pv_mw)]
     ax2.bar(hours, p_dis, bar_w,
-            label="BESS Discharge (MW)", color=_PEA_GOLD_LIGHT, alpha=0.80,
+            label="BESS Discharge", color=_COLOR_BESS_DIS, alpha=0.85,
             bottom=bottom_dis)
 
     ax2.bar(hours, [-v for v in p_ch], bar_w,
-            label="BESS Charge (MW)", color=_PEA_PURPLE_DARK, alpha=0.75)
+            label="BESS Charging", color=_COLOR_BESS_CH, alpha=0.80)
 
-    # Load shedding (unserved energy) — only render if any hour > 0
+    # Load shedding — only render if any hour > 0
     if any(v > 1e-6 for v in p_shed):
         bottom_shed = [b + pv + d for b, pv, d in zip(bottom_pv, pv_mw, p_dis)]
         ax2.bar(hours, p_shed, bar_w,
-                label="Unserved (MW)", color="#C0392B", alpha=0.85,
+                label="Load Shedding (Unserved)", color=_COLOR_SHED, alpha=0.85,
                 bottom=bottom_shed, hatch="///", edgecolor="white")
 
-    ax2.plot(hours, load_mw, color=_PEA_GOLD, linewidth=1.8,
-             linestyle="--", label="Load (MW)")
+    ax2.plot(hours, load_mw, color=_COLOR_LOAD, linewidth=1.8,
+             linestyle="--", label="Island Load (MW)")
 
     if grid_limit is not None:
         cap = [grid_limit[h + 1] for h in hours]
-        ax2.plot(hours, cap, color=_PEA_PURPLE_DARK, linewidth=1.2,
-                 linestyle=":", alpha=0.75, label="Grid Cap (MW)")
+        ax2.plot(hours, cap, color=_COLOR_GRID, linewidth=1.2,
+                 linestyle=":", alpha=0.60, label="Cable Capacity Limit")
 
     ax2.axhline(0, color=_PEA_PURPLE, linewidth=0.9, alpha=0.6)
-    ax2.set_ylabel("Power (MW)")
+    ax2.set_ylabel("Dispatch Power (MW)")
     ax2.legend(loc="upper right", fontsize=7, ncol=2,
                facecolor=_PEA_BG, edgecolor=_PEA_PURPLE, labelcolor=_PEA_PURPLE)
     _grid(ax2)
 
-    # Generator ON marker (gold triangle) + startup label
+    # Diesel online marker (orange triangle above bar) + cold-start label
     for h in hours:
         if rows[h]["gen_online"]:
             y_top = p_grid[h] + p_gen[h] + pv_mw[h] + p_dis[h]
-            ax2.plot(h, y_top + 0.02, marker="^", color=_PEA_GOLD,
+            ax2.plot(h, y_top + 0.02, marker="^", color=_COLOR_DIESEL,
                      markersize=7, zorder=5)
         if rows[h]["gen_started"]:
-            ax2.annotate("S", xy=(h, 0), xytext=(h, -0.05),
-                         fontsize=6, color=_PEA_GOLD, ha="center",
+            ax2.annotate("START", xy=(h, 0), xytext=(h, -0.35),
+                         fontsize=5, color=_COLOR_DIESEL, ha="center",
                          fontweight="bold")
 
     # ------------------------------------------------------------------
-    # Panel 3: State of Charge
+    # Panel 3: BESS State of Charge
     # ------------------------------------------------------------------
     ax3 = axes[2]
     ax3.fill_between(hours, soc_pct, alpha=0.20, color=_PEA_PURPLE)
-    ax3.plot(hours, soc_pct, color=_PEA_PURPLE, linewidth=2, label="SoC (%)")
+    ax3.plot(hours, soc_pct, color=_PEA_PURPLE, linewidth=2,
+             label="BESS SoC (%)")
 
-    # Shade SoC safety band (soc_min–soc_max converted to %)
-    ax3.axhline(20, color=_PEA_GOLD, linewidth=1, linestyle=":",
-                alpha=0.8, label="SoC min/max bounds")
-    ax3.axhline(90, color=_PEA_GOLD, linewidth=1, linestyle=":", alpha=0.8)
+    # Safety operating band — derived from params.soc_min / soc_max
+    _p = params or MicrogridParams()
+    soc_lo = _p.soc_min * 100
+    soc_hi = _p.soc_max * 100
+    ax3.axhline(soc_lo, color=_PEA_GOLD, linewidth=1, linestyle=":",
+                alpha=0.8, label=f"SoC limits ({soc_lo:.0f}% – {soc_hi:.0f}%)")
+    ax3.axhline(soc_hi, color=_PEA_GOLD, linewidth=1, linestyle=":", alpha=0.8)
 
-    ax3.set_ylabel("SoC (%)")
+    ax3.set_ylabel("BESS SoC (%)")
     ax3.set_ylim(0, 105)
     ax3.legend(loc="lower right", fontsize=8,
                facecolor=_PEA_BG, edgecolor=_PEA_PURPLE, labelcolor=_PEA_PURPLE)
@@ -437,9 +446,10 @@ def plot_dispatch(
     # ------------------------------------------------------------------
     total_grid_cost = sum(rows[h]["grid_cost"] for h in hours)
     total_gen_cost  = sum(rows[h]["gen_cost"]  for h in hours)
+    total_bess_cost = sum(rows[h]["bess_cost"] for h in hours)
     cost_text = (
         f"Total Cost: {result.total_cost:,.0f} THB  │  "
-        f"Grid: {total_grid_cost:,.0f}  │  Generator: {total_gen_cost:,.0f}"
+        f"Grid: {total_grid_cost:,.0f}  │  Diesel: {total_gen_cost:,.0f}  │  BESS: {total_bess_cost:,.0f}"
     )
     fig.text(0.5, 0.01, cost_text, ha="center", fontsize=9,
              color=_PEA_PURPLE, fontweight="bold",
@@ -591,7 +601,8 @@ if __name__ == "__main__":
         # ----- chart -----
         fig = plot_dispatch(result, load, pv, tou,
                             title=f"Koh Tao — {name}",
-                            grid_limit=grid_limit)
+                            grid_limit=grid_limit,
+                            params=params)
         fig.savefig(out_png, dpi=150, bbox_inches="tight")
         plt.close(fig)
         print(f"  Chart saved → {out_png}")
