@@ -717,6 +717,24 @@ if __name__ == "__main__":
     ))
 
     # ------------------------------------------------------------------
+    # Scenario 6 — Single-day zoom of the stress-test template
+    # Same load / PV / dynamic cable cap as Scenario 5, but a single 24-hour
+    # horizon so each dispatch hour is legible. Demonstrates the optimizer's
+    # coordinated dispatch: pre-charge BESS 08–16h from PV + 12 MW cable,
+    # discharge 18–22h to absorb the 4 MW evening bottleneck, fire diesel
+    # only for the 14 MW peak.
+    # ------------------------------------------------------------------
+    summaries.append(_run_scenario(
+        name="6. Smart Dispatch — Single-day zoom of stress test",
+        load=_STRESS_DAY_LOAD,
+        pv=_STRESS_DAY_PV,
+        tou=DEFAULT_TOU,
+        params=MicrogridParams(),
+        grid_limit=_STRESS_DAY_GRID,
+        out_png="outputs/optimization/kohtao_scenario6_smart_dispatch.png",
+    ))
+
+    # ------------------------------------------------------------------
     # Cross-scenario summary
     # ------------------------------------------------------------------
     print(f"\n{'='*88}")
