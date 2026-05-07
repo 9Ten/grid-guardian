@@ -4,6 +4,19 @@ A hackathon project for the **Provincial Electricity Authority (PEA) of Thailand
 
 ---
 
+## Problem Statement
+
+![Problem Statement](docs/problem%20statement.png)
+
+Koh Tao sits at the tail end of a 33 kV submarine cable chain (mainland → Samui → Phangan → Tao). During peak tourist season, upstream demand on Samui and Phangan leaves Koh Tao with highly volatile residual capacity (0–16 MW) against a local load of 5–10 MW — sometimes none at all.
+
+- **Cost gap:** When the grid supply is short, local diesel generation (10 MW) runs at **13–14 THB/unit** while electricity is sold at the **~4 THB/unit** retail tariff — a structural ~10 THB/unit loss every time the diesels fire.
+- **Operator burden (Persona P1):** The Dispatch Control Center in Nakhon Si Thammarat manages six provinces 24/7; manually triaging Koh Tao outages on top of that drives operator fatigue.
+
+**Smart EMS** forecasts the bottleneck hours ahead, charges the **50 MWh BESS** when the grid is cheap and abundant, and dispatches diesel only when truly unavoidable — closing the THB/unit gap while keeping the island stable.
+
+---
+
 ## Architecture
 
 ```
