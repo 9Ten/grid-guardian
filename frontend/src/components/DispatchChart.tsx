@@ -8,9 +8,8 @@ import {
   Title,
   Tooltip,
   Legend,
-  ChartOptions,
-  ChartData
 } from 'chart.js';
+import type { ChartOptions, ChartData } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import styles from './DispatchChart.module.css';
 

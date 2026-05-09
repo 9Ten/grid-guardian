@@ -3,6 +3,7 @@ import React from 'react';
 import styles from './DashboardLayout.module.css';
 import { SourceMeter } from './SourceMeter';
 import { SocGauge } from './SocGauge';
+import { DispatchChart } from './DispatchChart';
 
 export const DashboardLayout: React.FC = () => {
     return (
@@ -34,7 +35,9 @@ export const DashboardLayout: React.FC = () => {
             </aside>
             <section className={styles.panel}>
                 <h2 style={{ fontSize: '0.875rem', color: 'var(--text-muted)', marginBottom: '12px', borderBottom: '1px solid var(--border)', paddingBottom: '4px' }}>DISPATCH & ANALYTICS</h2>
-                <div style={{ flex: 1 }}>Middle: Dispatch & Chart Content</div>
+                <div style={{ flex: 1 }}>
+                    <DispatchChart />
+                </div>
             </section>
             <aside className={styles.panel}>
                 <h2 style={{ fontSize: '0.875rem', color: 'var(--text-muted)', marginBottom: '12px', borderBottom: '1px solid var(--border)', paddingBottom: '4px' }}>ALERTS & ECONOMY</h2>
