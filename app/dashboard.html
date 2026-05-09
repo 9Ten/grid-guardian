@@ -36,6 +36,71 @@
             border-radius: 4px;
             padding: 12px;
         }
+
+        /* Task 3: Operational Status Styles */
+        .col-left h3 {
+            margin-top: 0;
+            border-bottom: 2px solid var(--pea-purple);
+            padding-bottom: 4px;
+            font-size: 1rem;
+            color: var(--pea-purple);
+        }
+        .source-meter {
+            margin-bottom: 12px;
+        }
+        .source-meter label {
+            display: block;
+            font-size: 0.85rem;
+            margin-bottom: 4px;
+            color: var(--text-muted);
+        }
+        .meter-bar {
+            height: 12px;
+            background: #EEEEEE;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 4px;
+        }
+        .meter-bar .fill {
+            height: 100%;
+            transition: width 0.5s ease;
+        }
+        .source-meter span {
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .soc-gauge-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 24px;
+        }
+        .soc-gauge {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 8px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            position: relative;
+            background: conic-gradient(var(--color-bess) 85%, transparent 0);
+        }
+        .soc-gauge::before {
+            content: '';
+            position: absolute;
+            width: 84px;
+            height: 84px;
+            background: var(--bg-panel);
+            border-radius: 50%;
+        }
+        .soc-gauge span {
+            position: relative;
+            z-index: 1;
+        }
     </style>
 </head>
 <body>
@@ -43,7 +108,31 @@
         <h1>PEA EMS — KOH TAO</h1>
     </header>
     <main class="dashboard-grid">
-        <aside class="panel col-left">Left: Ops Status</aside>
+        <aside class="panel col-left">
+            <h3>Source Status</h3>
+            <div class="source-meter">
+                <label>Grid Import</label>
+                <div class="meter-bar"><div class="fill" style="width: 45%; background: var(--color-grid);"></div></div>
+                <span>4.5 MW</span>
+            </div>
+            <div class="source-meter">
+                <label>Diesel Generation</label>
+                <div class="meter-bar"><div class="fill" style="width: 30%; background: var(--color-diesel);"></div></div>
+                <span>3.0 MW</span>
+            </div>
+            <div class="source-meter">
+                <label>Solar PV</label>
+                <div class="meter-bar"><div class="fill" style="width: 15%; background: var(--pea-gold);"></div></div>
+                <span>1.5 MW</span>
+            </div>
+
+            <div class="soc-gauge-container">
+                <label style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px;">BESS State of Charge</label>
+                <div class="soc-gauge">
+                    <span>85%</span>
+                </div>
+            </div>
+        </aside>
         <section class="panel col-mid">Middle: Dispatch & Chart</section>
         <aside class="panel col-right">Right: Alerts & Economy</aside>
     </main>
