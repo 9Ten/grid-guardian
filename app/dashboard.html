@@ -95,7 +95,7 @@
             font-weight: 600;
             font-size: 1.5rem;
             position: relative;
-            background: conic-gradient(var(--color-bess) 85%, #EEEEEE 0);
+            background: conic-gradient(var(--color-bess) var(--soc-p), #EEEEEE 0);
             box-shadow: inset 0 0 0 12px var(--bg-panel);
         }
         .soc-gauge .limit-marker {
@@ -155,7 +155,7 @@
 
             <div class="soc-gauge-container">
                 <label class="soc-label">BESS State of Charge</label>
-                <div class="soc-gauge">
+                <div class="soc-gauge" style="--soc-p: 85%;">
                     <div class="limit-marker limit-min" title="Min Safety Limit (20%)"></div>
                     <div class="limit-marker limit-max" title="Max Safety Limit (90%)"></div>
                     <span class="mono">85%</span>
