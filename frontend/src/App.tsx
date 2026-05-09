@@ -1,6 +1,7 @@
 import Header from './components/Header'
 import AlertStrip from './components/AlertStrip'
 import EnergySourceStatus from './components/EnergySourceStatus'
+import LoadForecastChart from './components/LoadForecastChart'
 
 export default function App() {
   return (
@@ -15,9 +16,7 @@ export default function App() {
         <div style={{ gridRow: '1 / 3' }}>
           <EnergySourceStatus />
         </div>
-        <div className="panel h-40 flex items-center justify-center" style={{ color: '#4a7a9b' }}>
-          LoadForecastChart (coming)
-        </div>
+        <LoadForecastChart />
         <div className="panel h-40 flex items-center justify-center" style={{ color: '#4a7a9b' }}>
           EarlyWarning (coming)
         </div>
