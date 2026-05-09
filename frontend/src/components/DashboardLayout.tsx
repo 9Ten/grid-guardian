@@ -43,24 +43,24 @@ export const DashboardLayout: React.FC = () => {
             <aside className={styles.panel}>
                 <h2 className={styles.panelTitle}>ALERTS & ECONOMY</h2>
                 <div className={styles.panelContent}>
-                    <div style={{ marginBottom: '16px' }}>
-                        <div style={{ fontSize: '0.75rem', color: 'var(--color-shed)', fontWeight: 600, marginBottom: '4px' }}>🔴 CRITICAL BOTTLENECK</div>
-                        <div style={{ fontSize: '0.875rem' }}>Mainland cable hitting 4.0 MW hard cap. Spinning reserve at 12%.</div>
+                    <div className={styles.alertItem}>
+                        <div className={`${styles.alertLabel} ${styles.alertCritical}`}>🔴 CRITICAL BOTTLENECK</div>
+                        <div className={styles.alertText}>Mainland cable hitting 4.0 MW hard cap. Spinning reserve at 12%.</div>
                     </div>
-                    <div style={{ marginBottom: '16px' }}>
-                        <div style={{ fontSize: '0.75rem', color: 'var(--pea-gold)', fontWeight: 600, marginBottom: '4px' }}>⚠️ DG START AUTHORIZED</div>
-                        <div style={{ fontSize: '0.875rem' }}>Synchronize Diesel Gen #1 by 17:45 to avoid BESS depletion.</div>
+                    <div className={styles.alertItem}>
+                        <div className={`${styles.alertLabel} ${styles.alertWarning}`}>⚠️ DG START AUTHORIZED</div>
+                        <div className={styles.alertText}>Synchronize Diesel Gen #1 by 17:45 to avoid BESS depletion.</div>
                     </div>
-                    <hr style={{ border: 'none', borderTop: '1px solid var(--border)', margin: '12px 0' }} />
+                    <hr className={styles.divider} />
                     <div>
-                        <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600, marginBottom: '8px' }}>ECONOMY SNAPSHOT</div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
-                            <span style={{ fontSize: '0.875rem' }}>System Cost</span>
-                            <span style={{ fontSize: '0.875rem', fontWeight: 600 }}>฿114,000 / day</span>
+                        <div className={styles.economyTitle}>ECONOMY SNAPSHOT</div>
+                        <div className={styles.economyRow}>
+                            <span className={styles.economyLabel}>System Cost</span>
+                            <span className={styles.economyValue}>฿114,000 / day</span>
                         </div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <span style={{ fontSize: '0.875rem' }}>Carbon Intensity</span>
-                            <span style={{ fontSize: '0.875rem', fontWeight: 600 }}>420 g/kWh</span>
+                        <div className={styles.economyRow}>
+                            <span className={styles.economyLabel}>Carbon Intensity</span>
+                            <span className={styles.economyValue}>420 g/kWh</span>
                         </div>
                     </div>
                 </div>

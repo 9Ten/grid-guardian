@@ -40,3 +40,57 @@
     display: flex;
     flex-direction: column;
 }
+
+.alertItem {
+    margin-bottom: 16px;
+}
+
+.alertLabel {
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.alertCritical {
+    color: var(--color-shed);
+}
+
+.alertWarning {
+    color: var(--pea-gold);
+}
+
+.alertText {
+    font-size: 0.875rem;
+}
+
+.divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 12px 0;
+}
+
+.economyTitle {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.economyRow {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4px;
+}
+
+.economyRow:last-child {
+    margin-bottom: 0;
+}
+
+.economyLabel {
+    font-size: 0.875rem;
+}
+
+.economyValue {
+    font-size: 0.875rem;
+    font-weight: 600;
+}
