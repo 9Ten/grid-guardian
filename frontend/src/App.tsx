@@ -4,6 +4,7 @@ import EnergySourceStatus from './components/EnergySourceStatus'
 import LoadForecastChart from './components/LoadForecastChart'
 import EarlyWarning from './components/EarlyWarning'
 import DispatchGantt from './components/DispatchGantt'
+import AdvisoryAgent from './components/AdvisoryAgent'
 
 export default function App() {
   return (
@@ -21,9 +22,7 @@ export default function App() {
         <LoadForecastChart />
         <EarlyWarning />
         <DispatchGantt />
-        <div className="panel h-40 flex items-center justify-center" style={{ color: '#4a7a9b' }}>
-          AdvisoryAgent (coming)
-        </div>
+        <AdvisoryAgent />
       </div>
     </div>
   )
