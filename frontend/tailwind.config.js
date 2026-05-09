@@ -7,7 +7,7 @@ export default {
         bg: '#060d1a',
         panel: '#0b1629',
         panel2: '#0f1e35',
-        cyan: { DEFAULT: '#00cfff', 2: '#00fff7' },
+        'gg-cyan': { DEFAULT: '#00cfff', 2: '#00fff7' },
         'gg-green': '#00e676',
         'gg-amber': '#ffab00',
         'gg-red': '#ff3d57',
