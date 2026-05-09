@@ -4,10 +4,10 @@ import styles from './AdvisoryAgent.module.css';
 
 export const AdvisoryAgent: React.FC = () => {
     const reasoningSteps = [
-        "Grid demand peaked at 2,050 kW (17:42)",
-        "Solar PV output declining (-15% per 10m)",
-        "BESS discharge initialized at 310 kW to offset spike",
-        "Diesel Generator #2 standby active for contingency"
+        "Load peak confirmed at 14.0 MW (19:00)",
+        "Grid import capped at 4.0 MW (Mainland bottleneck)",
+        "Diesel gensets ramped to 6.5 MW to bridge deficit",
+        "BESS discharging 3.5 MW; SoC projected 37% by 22:00"
     ];
 
     return (
@@ -30,15 +30,7 @@ export const AdvisoryAgent: React.FC = () => {
                     <button className={styles.approveButton}>
                         APPROVE DISPATCH
                     </button>
-                    <button style={{ 
-                        background: 'transparent', 
-                        border: '1px solid var(--border)',
-                        color: 'var(--text-main)',
-                        padding: '8px',
-                        borderRadius: '4px',
-                        fontSize: '0.75rem',
-                        cursor: 'pointer'
-                    }}>
+                    <button className={styles.modifyButton}>
                         MODIFY PLAN
                     </button>
                 </div>
@@ -47,7 +39,7 @@ export const AdvisoryAgent: React.FC = () => {
             <div className={styles.section}>
                 <h3 className={styles.title}>Ask Agent</h3>
                 <div className={styles.chatInterface}>
-                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontStyle: 'italic' }}>
+                    <div className={styles.chatPrompt}>
                         "Why is DG#2 on standby?"
                     </div>
                     <input 

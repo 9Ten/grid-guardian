@@ -64,6 +64,14 @@
   transform-origin: 0 80px;
 }
 
+.marker20 {
+  transform: rotate(72deg);
+}
+
+.marker90 {
+  transform: rotate(324deg);
+}
+
 .legend {
   margin-top: 24px;
   display: flex;
@@ -83,4 +91,12 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
+}
+
+.dotCritical {
+  background-color: #E74C3C;
+}
+
+.dotOptimal {
+  background-color: var(--color-bess);
 }

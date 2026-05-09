@@ -19,9 +19,9 @@ export const SourceMeter: React.FC<SourceMeterProps> = ({ label, value, percenta
         <div 
           className={styles.fill} 
           style={{ 
-            width: `${Math.min(100, Math.max(0, percentage))}%`,
-            backgroundColor: color 
-          }} 
+            '--fill-width': `${Math.min(100, Math.max(0, percentage))}%`,
+            '--fill-color': color 
+          } as React.CSSProperties} 
         />
       </div>
     </div>

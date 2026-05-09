@@ -21,17 +21,17 @@ export const SocGauge: React.FC<SocGaugeProps> = ({ percentage }) => {
             <span className={styles.percentageValue}>{p}%</span>
           </div>
           {/* Safety Markers */}
-          <div className={styles.marker} style={{ transform: 'rotate(72deg)' }} title="20% Limit"></div>
-          <div className={styles.marker} style={{ transform: 'rotate(324deg)' }} title="90% Limit"></div>
+          <div className={`${styles.marker} ${styles.marker20}`} title="20% Limit"></div>
+          <div className={`${styles.marker} ${styles.marker90}`} title="90% Limit"></div>
         </div>
       </div>
       <div className={styles.legend}>
         <div className={styles.legendItem}>
-          <span className={styles.dot} style={{ backgroundColor: '#E74C3C' }}></span>
+          <span className={`${styles.dot} ${styles.dotCritical}`}></span>
           <span>Critical &lt; 20%</span>
         </div>
         <div className={styles.legendItem}>
-          <span className={styles.dot} style={{ backgroundColor: 'var(--color-bess)' }}></span>
+          <span className={`${styles.dot} ${styles.dotOptimal}`}></span>
           <span>Optimal 20-90%</span>
         </div>
       </div>

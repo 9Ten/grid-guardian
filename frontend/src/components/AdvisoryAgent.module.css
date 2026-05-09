@@ -63,6 +63,21 @@
     opacity: 0.9;
 }
 
+.modifyButton {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-main);
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.modifyButton:hover {
+    background-color: rgba(0,0,0,0.05);
+}
+
 .chatInterface {
     display: flex;
     flex-direction: column;
@@ -83,4 +98,10 @@
 
 .chatInput:focus {
     border-color: var(--pea-purple);
+}
+
+.chatPrompt {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-style: italic;
 }
