@@ -4,6 +4,7 @@ import styles from './DashboardLayout.module.css';
 import { SourceMeter } from './SourceMeter';
 import { SocGauge } from './SocGauge';
 import { DispatchChart } from './DispatchChart';
+import { AdvisoryAgent } from './AdvisoryAgent';
 
 export const DashboardLayout: React.FC = () => {
     return (
@@ -43,6 +44,11 @@ export const DashboardLayout: React.FC = () => {
                 <h2 style={{ fontSize: '0.875rem', color: 'var(--text-muted)', marginBottom: '12px', borderBottom: '1px solid var(--border)', paddingBottom: '4px' }}>ALERTS & ECONOMY</h2>
                 <div style={{ flex: 1 }}>Right: Alerts & Economy Content</div>
             </aside>
+
+            <section className={`${styles.panel} ${styles.bottomPanel}`}>
+                <h2 style={{ fontSize: '0.875rem', color: 'var(--text-muted)', marginBottom: '12px', borderBottom: '1px solid var(--border)', paddingBottom: '4px' }}>ADVISORY AGENT</h2>
+                <AdvisoryAgent />
+            </section>
         </main>
     );
 };
