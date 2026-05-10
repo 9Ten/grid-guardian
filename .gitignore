@@ -9,6 +9,12 @@ wheels/
 # Virtual environments
 .venv
 
+# Node
+node_modules/
+
+# Frontend (lives in its own repo: grid-guardian-frontend)
+frontend/
+
 # AutoGluon trained model artifacts (large binaries)
 AutogluonModels/
 
