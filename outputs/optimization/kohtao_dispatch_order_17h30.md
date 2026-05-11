@@ -1,3 +1,5 @@
+![PEA Logo](../asset/PEA-Logo.png)
+
 # Koh Tao Microgrid — Dispatch Order
 
 **17:30 Thu 27-Mar-2026** &nbsp;│&nbsp; Solve `#0503-1728` &nbsp;│&nbsp; Valid until next re-solve **18:00**
